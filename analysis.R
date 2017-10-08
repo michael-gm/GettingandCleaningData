@@ -20,13 +20,11 @@ fulldata = rbind(train, test)
 
 # Get only the data on mean and std. dev.
 relCols <- grep(".*Mean.*|.*Std.*", features[,2])
-# First reduce the features table to what we want
 features <- features[relCols,]
 # Now add the last two columns (subject and activity)
 relCols <- c(relCols, 562, 563)
-# And remove the unwanted columns from allData
 fulldata <- fulldata[,relCols]
-# Add the column names (features) to allData
+# Add the column names (features) to fulldata
 colnames(fulldata) <- c(features$V2, "Activity", "Subject")
 colnames(fulldata) <- tolower(colnames(fulldata))
 
@@ -40,7 +38,6 @@ fulldata$activity <- as.factor(fulldata$activity)
 fulldata$subject <- as.factor(fulldata$subject)
 
 tidy = aggregate(fulldata, by=list(activity = fulldata$activity, subject=fulldata$subject), mean)
-# Remove the subject and activity column, since a mean of those has no use
 tidy[,90] = NULL
 tidy[,89] = NULL
 write.table(tidy, "tidy.txt", sep="\t")
